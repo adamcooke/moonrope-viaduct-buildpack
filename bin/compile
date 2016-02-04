@@ -12,7 +12,7 @@ fi
 # Get the latest version of Moonrope. This really should find out which version
 # of moonrope to use to generate docs.
 MOONROPE_SRC_DIR=$ROOT/moonrope-src
-if [ ! -d $MOONROPE_SRC_DIR ]; then
+if [ ! -d $MOONROPE_SRC_DIR/.git ]; then
   echo "Cloning Moonrope into $MOONROPE_SRC_DIR"
   git clone -q https://github.com/adamcooke/moonrope $MOONROPE_SRC_DIR
   cd $MOONROPE_SRC_DIR
