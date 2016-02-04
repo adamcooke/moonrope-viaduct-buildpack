@@ -19,6 +19,6 @@ else
   git pull
 fi
 
-bundle install
+bundle install --deployment
 rm -R $ROOT/moonrope-export
 bundle exec moonrope $ROOT/api $ROOT/moonrope-export
