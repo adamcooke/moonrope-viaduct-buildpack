@@ -16,7 +16,10 @@ the core repository.
 3. Once the application is created goto **Settings -> General** and choose a
    suitable Ruby platform and enter the buildpack URL as this repository.
 
-4. Deploy!
+4. Under **Config -> Static Files**, enable static file serving and enter the
+   document root as `moonrope-export`.
+
+5. Deploy!
 
 ## TODO
 
