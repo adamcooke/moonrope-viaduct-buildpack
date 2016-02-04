@@ -1,23 +1,24 @@
 #!/bin/bash
 
-ROOT=$1
+APP_ROOT=$1
+BUILD_ROOT=$2
 
-cd $ROOT
+cd $APP_ROOT
 
-if [ -f $ROOT/Procfile ]; then
+if [ -f $APP_ROOT/Procfile ]; then
   echo "Removing Procfile because you shouldn't be running processes"
-  rm $ROOT/Procfile
+  rm $APP_ROOT/Procfile
 fi
 
 # Get the latest version of Moonrope. This really should find out which version
 # of moonrope to use to generate docs.
-MOONROPE_SRC_DIR=$ROOT/moonrope-src
-if [ ! -d $MOONROPE_SRC_DIR/.git ]; then
+MOONROPE_SRC_DIR=$BUILD_ROOT/moonrope-src
+if [ ! -d $MOONROPE_SRC_DIR ]; then
   echo "Cloning Moonrope into $MOONROPE_SRC_DIR"
   git clone -q https://github.com/adamcooke/moonrope $MOONROPE_SRC_DIR
   cd $MOONROPE_SRC_DIR
 else
-  echo "Moonrope source already exists. Updating it..."
+  echo "Moonrope source already exists at $MOONROPE_SRC_DIR. Updating it..."
   cd $MOONROPE_SRC_DIR
   git pull
 fi
@@ -26,10 +27,10 @@ fi
 bundle install --deployment
 
 # Remove the export directory if it exists
-MOONROPE_EXPORT_DIR=$ROOT/moonrope-export
+MOONROPE_EXPORT_DIR=$APP_ROOT/moonrope-export
 if [ -d $MOONROPE_EXPORT_DIR ]; then
-  rm -R $ROOT/moonrope-export
+  rm -R $MOONROPE_EXPORT_DIR
 fi
 
 # Actually generate the documentation
-bundle exec moonrope $ROOT/api $ROOT/moonrope-export
+bundle exec moonrope $APP_ROOT/api $APP_ROOT/moonrope-export
