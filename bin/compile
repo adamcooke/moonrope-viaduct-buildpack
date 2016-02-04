@@ -5,13 +5,16 @@ ROOT=$1
 cd $ROOT
 
 if [ -f $ROOT/Procfile]; then
+  echo "Removing Procfile because you shouldn't be running processes"
   rm $ROOT/Procfile
 fi
 
+# Get the latest version of Moonrope. This really should find out which version
+# of moonrope to use to generate docs.
 MOONROPE_SRC_DIR=$ROOT/moonrope-src
 if [ ! -d $MOONROPE_SRC_DIR ]; then
   echo "Cloning Moonrope into $MOONROPE_SRC_DIR"
-  git clone https://github.com/adamcooke/moonrope $MOONROPE_SRC_DIR
+  git clone -q https://github.com/adamcooke/moonrope $MOONROPE_SRC_DIR
   cd $MOONROPE_SRC_DIR
 else
   echo "Moonrope source already exists. Updating it..."
@@ -19,6 +22,14 @@ else
   git pull
 fi
 
+# Install dependencies
 bundle install --deployment
-rm -R $ROOT/moonrope-export
+
+# Remove the export directory if it exists
+MOONROPE_EXPORT_DIR=$ROOT/moonrope-export
+if [ -d $MOONROPE_EXPORT_DIR ]; then
+  rm -R $ROOT/moonrope-export
+fi
+
+# Actually generate the documentation
 bundle exec moonrope $ROOT/api $ROOT/moonrope-export
